@@ -11,7 +11,7 @@ public:
     explicit TCPClientBase(QTcpSocket* socket, QObject *parent = nullptr);
 
 signals:
-    void disConnected(TCPClientBase client);
+    void disConnected(TCPClientBase* client);
 
 public slots:
     virtual void OnConnected();
