@@ -17,10 +17,12 @@ void ServerManager::OnConnect()
     auto newClient = new ConnectedClient(server->nextPendingConnection(), this);
     Clients.push_back(newClient);
 
-    connect(newClient, SIGNAL(disconnected()), this, SLOT(OnDisconnectClient()));
+    connect(newClient, SIGNAL(disconnected(ConnectedClient*)), this, SLOT(OnDisconnectClient(ConnectedClient*)));
 }
 
 void ServerManager::OnDisconnectClient(ConnectedClient* client)
 {
-
+    disconnect(client, SIGNAL(disconnected(ConnectedClient*)), this, SLOT(OnDisconnectClient(ConnectedClient*)));
+    Clients.removeAll(client);
 }
+
