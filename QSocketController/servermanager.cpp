@@ -9,20 +9,29 @@ ServerManager::ServerManager(QObject *parent)
     server->listen(QHostAddress::Any, 9013);
 
     connect(server, SIGNAL(newConnection()), this, SLOT(OnConnect()));
-
 }
 
 void ServerManager::OnConnect()
 {
-    auto newClient = new ConnectedClient(server->nextPendingConnection(), this);
+    auto newClient = new ConnectedClient(this);
+    newClient->setClient(server->nextPendingConnection());
+
     Clients.push_back(newClient);
 
-    connect(newClient, SIGNAL(disconnected(ConnectedClient*)), this, SLOT(OnDisconnectClient(ConnectedClient*)));
+    connect(newClient, SIGNAL(disConnected(TCPClientBase*)), this, SLOT(OnDisconnectClient(TCPClientBase*)));
+    connect(newClient, SIGNAL(dataReceived(QString)), this, SLOT(OnReceived(QString)));
 }
 
-void ServerManager::OnDisconnectClient(ConnectedClient* client)
+void ServerManager::OnDisconnectClient(TCPClientBase* client)
 {
-    disconnect(client, SIGNAL(disconnected(ConnectedClient*)), this, SLOT(OnDisconnectClient(ConnectedClient*)));
-    Clients.removeAll(client);
+    disconnect(client, SIGNAL(disconnected(TCPClientBase*)), this, SLOT(OnDisconnectClient(TCPClientBase*)));
+    disconnect(client, SIGNAL(dataReceived(QString)), this, SLOT(OnReceived(QString)));
+
+    auto _client = (ConnectedClient*)client;
+    Clients.removeAll(_client);
 }
 
+void ServerManager::OnReceived(QString message)
+{
+    emit changeServerReceivedString(message);
+}

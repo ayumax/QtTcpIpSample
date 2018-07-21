@@ -1,7 +1,7 @@
 #include "connectedclient.h"
 
-ConnectedClient::ConnectedClient(QTcpSocket* socket, QObject *parent)
-    : TCPClientBase(socket, parent)
+ConnectedClient::ConnectedClient(QObject *parent)
+    : TCPClientBase(parent)
 {
 
 }

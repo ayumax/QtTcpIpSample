@@ -9,8 +9,10 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    qmlRegisterType<MainModel>("MyModule", 1,0, "MainModel");
+
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 

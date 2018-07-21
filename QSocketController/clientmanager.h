@@ -13,6 +13,7 @@ public:
 
 
     void ConnectToServer();
+    void SendClientToServer(QString message);
 
 signals:
 

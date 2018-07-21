@@ -8,7 +8,7 @@ class ConnectedClient : public TCPClientBase
 {
     Q_OBJECT
 public:
-    explicit ConnectedClient(QTcpSocket* socket, QObject *parent = nullptr);
+    explicit ConnectedClient(QObject *parent = nullptr);
 
 signals:
 

@@ -8,10 +8,13 @@ class TCPClientBase : public QObject
 {
     Q_OBJECT
 public:
-    explicit TCPClientBase(QTcpSocket* socket, QObject *parent = nullptr);
+    explicit TCPClientBase(QObject *parent = nullptr);
+
+    void setClient(QTcpSocket* socket);
 
 signals:
     void disConnected(TCPClientBase* client);
+    void dataReceived(QString message);
 
 public slots:
     virtual void OnConnected();
@@ -21,6 +24,9 @@ public slots:
 
 protected:
     QTcpSocket* tcpClient;
+
+    QByteArray tempBuffer;
+    qint32 bodySize;
 };
 
 #endif // TCPCLIENTBASE_H

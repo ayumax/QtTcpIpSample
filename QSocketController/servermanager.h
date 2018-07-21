@@ -3,7 +3,9 @@
 
 #include <QTcpServer>
 #include <QObject>
+
 class ConnectedClient;
+class TCPClientBase;
 
 class ServerManager: public QObject
 {
@@ -11,10 +13,15 @@ class ServerManager: public QObject
 public:
     explicit ServerManager(QObject *parent = nullptr);
 
+
+signals:
+    void changeServerReceivedString(QString message);
+
 protected slots:
     void OnConnect();
 
-    void OnDisconnectClient(ConnectedClient* client);
+    void OnDisconnectClient(TCPClientBase* client);
+    void OnReceived(QString message);
 
 private:
     QTcpServer* server;

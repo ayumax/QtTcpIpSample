@@ -41,3 +41,5 @@ HEADERS += \
     clientmanager.h \
     connectedclient.h \
     tcpclientbase.h
+
+
