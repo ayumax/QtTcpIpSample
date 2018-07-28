@@ -3,8 +3,7 @@ import MyModule 1.0
 
 ServerControlForm {
 
-    rect.x: model.RMouseX
-    rect.y: model.RMouseY
-    textArea.text: model.serverReceivedString
-    rect.color: model.RPressed ? "blue" : "red"
+    rect.x: server.MouseX
+    rect.y: server.MouseY
+    rect.color: server.Pressed ? "blue" : "red"
 }

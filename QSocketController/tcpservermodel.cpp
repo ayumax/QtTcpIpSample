@@ -1,8 +1,8 @@
-#include "servermanager.h"
+#include "tcpservermodel.h"
 #include <QTcpSocket>
-#include "connectedclient.h"
+#include "tcpclientmodel.h"
 
-ServerManager::ServerManager(QObject *parent)
+TCPServerModel::TCPServerModel(QObject *parent)
     : QObject(parent)
 {
     server = new QTcpServer(this);
@@ -11,27 +11,27 @@ ServerManager::ServerManager(QObject *parent)
     connect(server, SIGNAL(newConnection()), this, SLOT(OnConnect()));
 }
 
-void ServerManager::OnConnect()
+void TCPServerModel::OnConnect()
 {
-    auto newClient = new ConnectedClient(this);
+    auto newClient = new TCPClientModel(this);
     newClient->setClient(server->nextPendingConnection());
 
     Clients.push_back(newClient);
 
-    connect(newClient, SIGNAL(disConnected(TCPClientBase*)), this, SLOT(OnDisconnectClient(TCPClientBase*)));
+    connect(newClient, SIGNAL(disConnected(TCPClientModel*)), this, SLOT(OnDisconnectClient(TCPClientModel*)));
     connect(newClient, SIGNAL(dataReceived(QString)), this, SLOT(OnReceived(QString)));
 }
 
-void ServerManager::OnDisconnectClient(TCPClientBase* client)
+void TCPServerModel::OnDisconnectClient(TCPClientModel* client)
 {
-    disconnect(client, SIGNAL(disconnected(TCPClientBase*)), this, SLOT(OnDisconnectClient(TCPClientBase*)));
+    disconnect(client, SIGNAL(disconnected(TCPClientModel*)), this, SLOT(OnDisconnectClient(TCPClientModel*)));
     disconnect(client, SIGNAL(dataReceived(QString)), this, SLOT(OnReceived(QString)));
 
-    auto _client = (ConnectedClient*)client;
+    auto _client = (TCPClientModel*)client;
     Clients.removeAll(_client);
 }
 
-void ServerManager::OnReceived(QString message)
+void TCPServerModel::OnReceived(QString message)
 {
     emit changeServerReceivedString(message);
 }

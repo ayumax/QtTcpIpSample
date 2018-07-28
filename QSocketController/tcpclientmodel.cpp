@@ -1,14 +1,18 @@
-#include "tcpclientbase.h"
+#include "tcpclientmodel.h"
 #include <QTcpSocket>
-#include <QHostAddress>
 #include <QDataStream>
 
-TCPClientBase::TCPClientBase(QObject *parent) : QObject(parent)
+TCPClientModel::TCPClientModel(QObject *parent) : QObject(parent)
 {
     bodySize = 0;
 }
 
-void TCPClientBase::setClient(QTcpSocket* socket)
+void TCPClientModel::setClient()
+{
+    setClient(new QTcpSocket(this));
+}
+
+void TCPClientModel::setClient(QTcpSocket* socket)
 {
     tcpClient = socket;
 
@@ -18,17 +22,39 @@ void TCPClientBase::setClient(QTcpSocket* socket)
     connect(tcpClient, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(OnError()));
 }
 
-void TCPClientBase::OnConnected()
+
+void TCPClientModel::ConnectToServer(QHostAddress address, quint16 port)
+{
+    tcpClient->connectToHost(address, port);
+}
+
+
+void TCPClientModel::SendClientToServer(QString message)
+{
+    QByteArray messageBytes = message.toUtf8();
+
+    int messageSize = messageBytes.length();
+    QByteArray sizeBytes;
+    QDataStream stream(&sizeBytes, QIODevice::WriteOnly);
+    stream << messageSize;
+
+    tcpClient->write(sizeBytes, sizeBytes.length());
+    tcpClient->write(messageBytes, messageBytes.length());
+    tcpClient->flush();
+}
+
+
+void TCPClientModel::OnConnected()
 {
     qDebug("onConnect client");
 }
 
-void TCPClientBase::OnDisconnected()
+void TCPClientModel::OnDisconnected()
 {
     emit disConnected(this);
 }
 
-void TCPClientBase::OnReceived()
+void TCPClientModel::OnReceived()
 {
     while (tcpClient->bytesAvailable() > 0)
     {
@@ -57,7 +83,7 @@ void TCPClientBase::OnReceived()
     }
 }
 
-void TCPClientBase::OnError()
+void TCPClientModel::OnError()
 {
 
 }

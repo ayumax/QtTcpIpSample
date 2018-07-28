@@ -8,20 +8,16 @@ Item {
     width: 320
     height: 480
 
-    //    header: Label {
-    //        text: qsTr("Client")
-    //        font.pixelSize: Qt.application.font.pixelSize * 2
-    //        padding: 10
-    //    }
-    Rectangle {
-        id: rectangle
-        color: "#98e167"
-        anchors.fill: parent
-    }
-
     MouseArea {
         id: clientMouseArea
         anchors.fill: parent
         hoverEnabled: true
+    }
+
+    Text {
+        id: text1
+        color: "#262626"
+        text: qsTr("Client")
+        font.pixelSize: 24
     }
 }

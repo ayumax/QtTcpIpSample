@@ -1,19 +1,24 @@
-#ifndef TCPCLIENTBASE_H
-#define TCPCLIENTBASE_H
+#ifndef TCPClientModel_H
+#define TCPClientModel_H
 
 #include <QObject>
+#include <QHostAddress>
+
 class QTcpSocket;
 
-class TCPClientBase : public QObject
+class TCPClientModel : public QObject
 {
     Q_OBJECT
 public:
-    explicit TCPClientBase(QObject *parent = nullptr);
+    explicit TCPClientModel(QObject *parent = nullptr);
 
+    void setClient();
     void setClient(QTcpSocket* socket);
+    void ConnectToServer(QHostAddress address, quint16 port);
+    void SendClientToServer(QString message);
 
 signals:
-    void disConnected(TCPClientBase* client);
+    void disConnected(TCPClientModel* client);
     void dataReceived(QString message);
 
 public slots:
@@ -29,4 +34,4 @@ protected:
     qint32 bodySize;
 };
 
-#endif // TCPCLIENTBASE_H
+#endif // TCPClientModel_H

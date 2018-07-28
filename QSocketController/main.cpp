@@ -1,7 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "mainmodel.h"
+#include "mouseclient.h"
+#include "mouseserver.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,16 +10,21 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<MainModel>("MyModule", 1,0, "MainModel");
+    qmlRegisterType<MouseClient>("MyModule", 1,0, "MouseClient");
+    qmlRegisterType<MouseServer>("MyModule", 1,0, "MouseServer");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    MainModel data;
-    data.Init();
-    engine.rootContext()->setContextProperty("model", &data);
+    MouseServer server;
+    server.Init();
+    engine.rootContext()->setContextProperty("server", &server);
+
+    MouseClient client;
+    client.Init();
+    engine.rootContext()->setContextProperty("client", &client);
 
     return app.exec();
 }

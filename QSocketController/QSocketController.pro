@@ -16,11 +16,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    mainmodel.cpp \
-    servermanager.cpp \
-    clientmanager.cpp \
-    connectedclient.cpp \
-    tcpclientbase.cpp
+    tcpclientmodel.cpp \
+    tcpservermodel.cpp \
+    mouseclient.cpp \
+    mouseserver.cpp
 
 RESOURCES += qml.qrc
 
@@ -36,10 +35,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    mainmodel.h \
-    servermanager.h \
-    clientmanager.h \
-    connectedclient.h \
-    tcpclientbase.h
+    tcpclientmodel.h \
+    tcpservermodel.h \
+    mouseclient.h \
+    mouseserver.h
 
 

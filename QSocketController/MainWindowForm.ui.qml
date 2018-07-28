@@ -18,7 +18,7 @@ Item {
         Rectangle {
             id: rectangle
             width: 5
-            color: "#e12c2c"
+            color: "#ffffff"
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
             anchors.top: parent.top

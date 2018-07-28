@@ -7,18 +7,18 @@ ClientControlForm{
     {
         if (clientMouseArea.pressed)
         {
-            model.setMousePosition(clientMouseArea.mouseX, clientMouseArea.mouseY)
+            client.setMousePosition(clientMouseArea.mouseX, clientMouseArea.mouseY)
         }
     }
 
 
     clientMouseArea.onPressed:
     {
-        model.changePressd(clientMouseArea.pressed)
+        client.changePressed(clientMouseArea.pressed)
         positionChange()
     }
 
-    clientMouseArea.onReleased: model.changePressd(false);
+    clientMouseArea.onReleased: client.changePressed(false);
 
     clientMouseArea.onPositionChanged: positionChange()
 
