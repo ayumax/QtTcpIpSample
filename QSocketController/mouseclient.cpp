@@ -20,7 +20,7 @@ void MouseClient::Init()
 
 void MouseClient::sendClientToServer(QString message)
 {
-    Client->SendClientToServer(message);
+    Client->SendMessage(message);
 }
 
 
@@ -30,8 +30,6 @@ void MouseClient::setMousePosition(double mouesX, double mouseY)
     m_mouseY = mouseY;
 
     sendClientToServer();
-
-    qDebug() << "setMousePosition";
 }
 
 void MouseClient::changePressed(bool pressed)
@@ -39,8 +37,6 @@ void MouseClient::changePressed(bool pressed)
     m_pressed = pressed;
 
     sendClientToServer();
-
-    qDebug() << "changePressed";
 }
 
 void MouseClient::sendClientToServer()
@@ -55,7 +51,7 @@ void MouseClient::sendClientToServer()
     QJsonDocument doc(mouesJson);
     QString strJson(doc.toJson(QJsonDocument::Compact));
 
-    Client->SendClientToServer(strJson);
+    Client->SendMessage(strJson);
 }
 
 

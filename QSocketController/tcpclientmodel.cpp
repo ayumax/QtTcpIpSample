@@ -2,9 +2,11 @@
 #include <QTcpSocket>
 #include <QDataStream>
 
-TCPClientModel::TCPClientModel(QObject *parent) : QObject(parent)
+TCPClientModel::TCPClientModel(QObject *parent)
+    : QObject(parent)
+    , tcpClient(nullptr)
+    , bodySize(0)
 {
-    bodySize = 0;
 }
 
 void TCPClientModel::setClient()
@@ -25,12 +27,15 @@ void TCPClientModel::setClient(QTcpSocket* socket)
 
 void TCPClientModel::ConnectToServer(QHostAddress address, quint16 port)
 {
+    if (tcpClient == nullptr) return;
     tcpClient->connectToHost(address, port);
 }
 
 
-void TCPClientModel::SendClientToServer(QString message)
+void TCPClientModel::SendMessage(QString message)
 {
+    if (tcpClient == nullptr) return;
+
     QByteArray messageBytes = message.toUtf8();
 
     int messageSize = messageBytes.length();

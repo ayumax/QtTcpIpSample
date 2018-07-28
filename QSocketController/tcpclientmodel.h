@@ -15,7 +15,7 @@ public:
     void setClient();
     void setClient(QTcpSocket* socket);
     void ConnectToServer(QHostAddress address, quint16 port);
-    void SendClientToServer(QString message);
+    void SendMessage(QString message);
 
 signals:
     void disConnected(TCPClientModel* client);
